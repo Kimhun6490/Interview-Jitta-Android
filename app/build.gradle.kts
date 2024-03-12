@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.mamafarm.android.interview_jitta"
-    compileSdk = 34
+    compileSdk = AndroidConfig.compileSdkVersion
 
     defaultConfig {
         applicationId = "com.mamafarm.android.interview_jitta"
-        minSdk = 31
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = AndroidConfig.minSdkVersion
+        targetSdk = AndroidConfig.targetSdkVersion
+        versionCode = AndroidConfig.versionCode
+        versionName = AndroidConfig.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
