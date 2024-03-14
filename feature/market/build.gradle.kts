@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "com.mamafarm.android.market"
-    compileSdk = 34
+    compileSdk = AndroidConfig.compileSdkVersion
 
     defaultConfig {
-        minSdk = 31
+        minSdk = AndroidConfig.minSdkVersion
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -22,6 +22,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,4 +43,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //FRAGMENT
+    implementation(libs.fragment.ktx)
 }

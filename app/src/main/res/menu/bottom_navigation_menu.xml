@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:icon="@drawable/jitta_ic_search"
+        android:iconTint="@color/seed"
+        android:title="@string/jitta_menu_search" />
+    <item
+        android:id="@+id/jittaMarketFragment"
+        android:icon="@drawable/jitta_ic_ranking"
+        android:title="@string/jitta_menu_ranking" />
+    <item
+        android:icon="@drawable/jitta_ic_heart"
+        android:title="@string/jitta_menu_following" />
+    <item
+        android:icon="@drawable/jitta_ic_bell"
+        android:title="@string/jitta_menu_update" />
+    <item
+        android:icon="@drawable/jitta_ic_option"
+        android:title="@string/jitta_menu_more" />
+</menu>
