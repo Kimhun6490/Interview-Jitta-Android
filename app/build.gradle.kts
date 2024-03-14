@@ -72,4 +72,7 @@ dependencies {
     //NAVIGATION COMPONENT
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
+    //SPLASHSCREEN
+    implementation(libs.androidx.core.splashscreen)
 }
