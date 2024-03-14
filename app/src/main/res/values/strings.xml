@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Interview_Jitta</string>
+
+    <string name="jitta_menu_search">Search</string>
+    <string name="jitta_menu_ranking">Jitta Ranking</string>
+    <string name="jitta_menu_following">Following</string>
+    <string name="jitta_menu_update">Updates</string>
+    <string name="jitta_menu_more">More</string>
 </resources>
