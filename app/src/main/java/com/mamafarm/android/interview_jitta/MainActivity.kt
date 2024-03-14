@@ -1,7 +1,6 @@
 package com.mamafarm.android.interview_jitta
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.mamafarm.android.interview_jitta.databinding.JittaActivityMainBinding
 
