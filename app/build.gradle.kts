@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.androidxNavigationSafeargsKotlin)
 }
 
 android {
@@ -73,5 +72,4 @@ dependencies {
     //NAVIGATION COMPONENT
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.navigation.safe.args.gradle.plugin)
 }
