@@ -1,6 +1,6 @@
-package com.mamafarm.android.market.model
+package com.mamafarm.android.ranking.model
 
-data class JittaStock(
+data class JittaRank(
     val title: String,
     val code: String,
     val rank: Int

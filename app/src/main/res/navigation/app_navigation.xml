@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/jittaMarketFragment"
-        android:name="com.mamafarm.android.market.presentation.JittaMarketFragment"
+        android:name="com.mamafarm.android.ranking.presentation.JittaRankingFragment"
         android:label="JittaMarketFragment" />
 </navigation>

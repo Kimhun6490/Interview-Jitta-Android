@@ -1,4 +1,4 @@
-package com.mamafarm.android.market
+package com.mamafarm.android.ranking
 
 import org.junit.Test
 

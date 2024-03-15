@@ -1,4 +1,4 @@
-package com.mamafarm.android.market.presentation
+package com.mamafarm.android.ranking.presentation
 
 import android.R
 import android.os.Bundle
@@ -13,10 +13,10 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
 
-class JittaMarketFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
+class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: JittaFragmentMarketBinding
-    private val viewModel: JittaMarketViewModel by viewModels()
+    private val viewModel: JittaRankingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,7 +63,7 @@ class JittaMarketFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         with(binding.spCountry) {
             adapter = countryAdapter
             setSelection(0, false)
-            onItemSelectedListener = this@JittaMarketFragment
+            onItemSelectedListener = this@JittaRankingFragment
             layoutParams = params
             setPopupBackgroundResource(R.color.background_light)
         }
