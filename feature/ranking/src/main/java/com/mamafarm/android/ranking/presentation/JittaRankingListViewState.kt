@@ -1,4 +1,4 @@
 package com.mamafarm.android.market.presentation
 
-sealed class JittaMarketViewState {
+sealed class JittaStockListViewState {
 }
