@@ -14,6 +14,5 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.setDecorFitsSystemWindows(false)
     }
 }

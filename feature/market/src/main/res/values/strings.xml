@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="jitta_toolbar_title">Jitta Ranking</string>
+    <string name="jitta_appbar_title">Jitta</string>
+    <string name="jitta_appbar_description">Discovery today\'s top value stock</string>
+</resources>

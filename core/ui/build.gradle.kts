@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.mamafarm.android.market"
-    compileSdk = AndroidConfig.compileSdkVersion
+    namespace = "com.mamafarm.android.ui"
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = AndroidConfig.minSdkVersion
+        minSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -23,9 +23,6 @@ android {
             )
         }
     }
-    buildFeatures {
-        viewBinding = true
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,7 +33,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:ui"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -44,10 +40,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    //FRAGMENT
-    implementation(libs.fragment.ktx)
-
-    //SWIPE-REFRESH LAYOUT
-    implementation(libs.androidx.swiperefreshlayout)
 }

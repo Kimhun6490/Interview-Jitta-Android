@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
     implementation(project(":feature:market"))
 
     implementation(libs.androidx.core.ktx)
