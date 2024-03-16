@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltAndroid)
 }
 
 android {
@@ -51,7 +52,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:market"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:ranking"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -75,4 +77,8 @@ dependencies {
 
     //SPLASHSCREEN
     implementation(libs.androidx.core.splashscreen)
+
+    //HILT
+    implementation(libs.dagger.hilt.android)
+    annotationProcessor(libs.dagger.hilt.compiler)
 }
