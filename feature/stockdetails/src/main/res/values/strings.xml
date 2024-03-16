@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="jitta_score">Jitta Score</string>
+    <string name="jitta_follow">Follow</string>
+    <string name="jitta_unfollow">Unfollow</string>
+    <string name="jitta_factors">Jitta Factors</string>
+    <string name="jitta_signs">Jitta Signs</string>
+    <string name="jitta_company_description">Company Description</string>
+    <string name="jitta_company_info">Company Description</string>
+</resources>
