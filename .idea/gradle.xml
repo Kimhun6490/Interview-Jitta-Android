@@ -27,6 +27,7 @@
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/ranking" />
+            <option value="$PROJECT_DIR$/feature/stockdetails" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
