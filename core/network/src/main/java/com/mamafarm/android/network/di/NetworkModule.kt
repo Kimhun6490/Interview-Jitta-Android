@@ -23,7 +23,7 @@ class NetworkModule {
     @Singleton
     fun provideApolloBuilder(okHttpClient: OkHttpClient): ApolloClient {
         return ApolloClient.Builder()
-            .serverUrl("https://example.com/graphql")
+            .serverUrl("https://asia-east2-jitta-api.cloudfunctions.net/graphqlDev")
             .okHttpClient(okHttpClient)
             .build()
     }

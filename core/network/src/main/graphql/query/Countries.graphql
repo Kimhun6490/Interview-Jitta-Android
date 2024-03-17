@@ -1,4 +1,4 @@
-query Query {
+query CountryWithNameAndFlag {
     availableCountry {
         name
         flag
