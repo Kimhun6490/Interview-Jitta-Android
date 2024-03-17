@@ -36,6 +36,7 @@ android {
 }
 apollo {
     service("service") {
+        generateKotlinModels.set(true)
         packageName.set("com.mamafarm.android.network")
     }
 }
