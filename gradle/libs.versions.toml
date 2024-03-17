@@ -14,7 +14,7 @@ navigation = "2.7.7"
 fragmentKtx = "1.6.2"
 splashscreen = "1.0.0-beta02"
 swiperefreshlayout = "1.2.0-alpha01"
-hilt = "2.48"
+hilt = "2.48.1"
 ksp = "1.9.23-1.0.19"
 apollo3 = "4.0.0-beta.5"
 
