@@ -1,0 +1,993 @@
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+) on OBJECT | FIELD_DEFINITION
+
+directive @hasRole(roles: [String]) on FIELD | FIELD_DEFINITION
+
+type Query {
+  availableCountry: [StockCountry]
+  test: String
+  stock(id: String, stockId: Int): Stock
+  interdays(
+    stockId: Int
+    startDate: String
+    endDate: String
+    groupBy: GroupByEnum
+    filterBy: FilterInput
+  ): InterdayResult
+  listJittaSectorType: [Sector]
+  jittaRanking(filter: RankingInput): RankingResult
+  translateSummary(input: TranslateInput): TranslateResult
+  search(keyword: String, countries: [Country]): [SearchResult]
+  me: User
+  isAuthenticated: Boolean
+  following(filter: FollowingInput): FollowingData
+  listNotifications(limit: Int, page: Int): ListNotifications
+  wise(id: String, stockId: Int): [WiseData]
+  listPageGroup: [PageGroup]
+  page(id: String): PageInterface
+  getInvestingMixData: InvestingMixPage
+  getDemographicQuestions: DemographicQuestionList
+  getNextInvestingMixQuestion(
+    input: NextInvestingMixQuestionInput
+  ): InvestingMixQuestion
+}
+
+type StockCountry {
+  code: String
+  name: String
+  displayExchange: [String]
+  flag: String
+}
+
+type Stock {
+  checklist: Checklist
+  wise: [WiseData]
+  isFollowing: Boolean
+  stockId: Int!
+  title: String
+  jitta: JittaIntel
+  jittaRankScore: Float
+  factsheetPrice: FactsheetPrice
+  financial: Financial
+  factsheet(names: [String]): [Factsheet]
+  adr: Boolean
+  company: Company
+  createDate: DateTime
+  currency: String
+  exchange: String
+  index_membership: [String]
+  market: String
+  name: String
+  price_currency: String
+  ric: String
+  shortname: String
+  symbol: String
+  type: String
+  updateDate: DateTime
+  updatedFinancial: DateTime
+  split_logs: [Any]
+  alias: String
+  updatedFinancialComplete: DateTime
+  financial_summary: FinancialSummary
+  character: Character
+  localName: String
+  availableInfo: AvailableInfo
+  companyStatus: CompanyStatus
+  id: String
+  consensus: Consensus
+  updatedAt: DateTime
+  currency_sign: String
+  last_complete_statement_enddate: String
+  last_complete_statement_key: String
+  capitalIqId: String
+  bussiness_summary: BussinessSummary
+  summary: String
+  bussiness_type: String
+  industry: String
+  industryGroup: String
+  sector: Sector
+  status: String
+  fundamental: Fundamental
+  price: Price
+  recommendation: Recommendation
+  playlist: Playlist
+  loss_chance: LossChance
+  comparison: Comparison
+  primary_stock: Boolean
+  graph_price: GraphPrice
+  price_correlation: PriceCorrelation
+  industry_group: String
+  class_conversion_factor: Int
+  reportingTemplate: String
+  quarterValues(filterBy: FilterInput): [QuarterValues]
+  trade_statistics: QuarterValues
+  nativeName: String
+  alias_history: [String]
+  actual_exchange: String
+  funFact: String
+}
+
+type Checklist {
+  summary: ChecklistSummary
+  data: [ChecklistData]
+}
+
+type ChecklistSummary {
+  totalChecked: Int
+  total: Int
+}
+
+type ChecklistData {
+  name: String
+  isChecked: Boolean
+}
+
+type WiseData {
+  key: String
+  title: String
+  data: [WiseContent]
+}
+
+type WiseContent {
+  text: String
+  chart: [WiseChart]
+  table: WiseTable
+}
+
+type WiseChart {
+  key: String
+  name: String
+  data: [WiseChartData]
+}
+
+type WiseChartData {
+  year: String
+  value: String
+}
+
+type WiseTable {
+  title: String
+  columnHead: [String]
+  columns: [TableColumn]
+  footer: String
+}
+
+type TableColumn {
+  name: String
+  data: [String]
+}
+
+type JittaIntel {
+  monthlyPrice: Scope
+  score: Scope
+  lossChanceKey: Scope
+  factor: FactorScope
+  jittaRankScore: Scope
+  line: Scope
+  priceDiff: Scope
+  sign: SignScope
+  yearlyReturn: Scope
+  lastCompleteStatementKey: String
+}
+
+type Scope {
+  type: String
+  total: Int
+  first: ScopeItem
+  last: ScopeItem
+  values(filterBy: IntelFilter): [ScopeItem]
+}
+
+interface ScopeItem {
+  id: ID
+  year: Int
+  month: Int
+  quarter: Int
+  day: Int
+  value: Float
+}
+
+input IntelFilter {
+  limit: Int
+  sort: SortEnum
+}
+
+enum SortEnum {
+  ASC
+  DESC
+}
+
+type FactorScope {
+  type: String
+  total: Int
+  first: FactorScopeItem
+  last: FactorScopeItem
+  values(filterBy: IntelFilter): [FactorScopeItem]
+}
+
+type FactorScopeItem {
+  id: ID
+  year: Int
+  month: Int
+  quarter: Int
+  day: Int
+  value: Factor
+}
+
+type Factor {
+  recent: FactorItem
+  growth: FactorItem
+  financial: FactorItem
+  return: FactorItem
+  management: FactorItem
+}
+
+type FactorItem {
+  name: String
+  level: FactorLevel
+  value: Float
+}
+
+enum FactorLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+type SignScope {
+  last: [IntelJittaSignLast]
+}
+
+type IntelJittaSignLast {
+  type: String
+  name: String
+  title: String
+  value: String
+  display: SignDisplay
+  raw: [SignRaw]
+}
+
+union SignDisplay = DisplayIPO | DisplayTable
+
+type DisplayIPO {
+  title: String
+  value: Int
+}
+
+type DisplayTable {
+  title: String
+  columnHead: [String]
+  columns: [TableColumn]
+  footer: String
+}
+
+interface SignRaw {
+  name: String
+}
+
+type FactsheetPrice {
+  data(filterBy: FilterInput): [Interday]
+  updatedAt: DateTime
+}
+
+input FilterInput {
+  limit: Int
+  sort: SortEnum
+}
+
+type Interday {
+  latest_price_timestamp: DateTime
+  timestamp: DateTime
+  open: Float
+  close: Float
+  high: Float
+  low: Float
+  volume: Float
+  market_cap: Float
+  datetime: DateTime
+}
+
+# A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+scalar DateTime
+
+type Financial {
+  quarter(filterBy: FilterInput): [FinancialQuarter]
+  fiscal(filterBy: FilterInput): [FinancialFascal]
+  dividendHistory: [FinancialDividendHistory]
+  ratio: FinancialRatio
+}
+
+type FinancialQuarter {
+  id: String
+  quarter: Int
+  year: Int
+  source: String
+  end_date: String
+  currency: String
+  income: FinancialSheet
+  balance: FinancialSheet
+  cashflow: FinancialSheet
+}
+
+type FinancialSheet {
+  statement_date: String
+  period_length: Int
+  period_type: String
+  source: FinancialSheetSource
+  lineitem: [FinancialValue]
+}
+
+type FinancialSheetSource {
+  updated: DateTime
+  from: String
+}
+
+type FinancialValue {
+  id: String
+  name: String
+  value: Float
+}
+
+type FinancialFascal {
+  id: String
+  year: Int
+  source: String
+  end_date: String
+  currency: String
+  income: FinancialSheet
+  balance: FinancialSheet
+  cashflow: FinancialSheet
+  complete_financial_date: DateTime
+}
+
+type FinancialDividendHistory {
+  currency: String
+  adj_amount: Float
+  amount: Float
+  pay_date: DateTime
+  ex_date: DateTime
+}
+
+type FinancialRatio {
+  latest: FinancialSheet
+}
+
+type Factsheet {
+  name: String
+  fiscal(limit: Int): [FactsheetFiscalValue]
+  quarter(limit: Int): [FactsheetQuarterValue]
+}
+
+type FactsheetFiscalValue {
+  year: String
+  value: String
+}
+
+type FactsheetQuarterValue {
+  quarter: String
+  value: String
+}
+
+type Company {
+  ipo_date: DateTime
+  first_price_date: DateTime
+  incorporated_date: DateTime
+  officer: [Officer]
+  link: [CompanyLink]
+  address: CompanyAddress
+  phone: String
+  fax: String
+  foreignBuy: CompanyForeignBuy
+}
+
+type Officer {
+  title: String
+  firstName: String
+  lastName: String
+  age: String
+  yearBorn: Int
+  prefix: String
+  suffix: String
+  emailAddress: String
+}
+
+type CompanyLink {
+  _id: String
+  url: String
+  title: String
+}
+
+type CompanyAddress {
+  line1: String
+  line2: String
+  city: String
+  state: String
+  zipcode: String
+  country: String
+  contry_code: String
+}
+
+type CompanyForeignBuy {
+  buyVolume: Int
+  ownedPercentage: Float
+  availableRoom: Int
+  totalRoom: Int
+  tradableValue: Float
+  tradableVolume: Float
+}
+
+scalar Any
+
+type FinancialSummary {
+  updated: DateTime
+  context: String
+}
+
+type Character {
+  stability_trend: Int
+  stability: String
+}
+
+type AvailableInfo {
+  officers: Boolean
+  significantdevelopment: Boolean
+  estimates: Boolean
+  financials: Boolean
+  businessintelligence: Boolean
+}
+
+type CompanyStatus {
+  expectedipo: Boolean
+  publicstatus: Boolean
+  activestatus: Boolean
+}
+
+type Consensus {
+  fiscal: ConsensusPeriodic
+  quarter: ConsensusPeriodic
+}
+
+type ConsensusPeriodic {
+  revenue: [ConsensusValue]
+  nprofitrep: [ConsensusValue]
+}
+
+type ConsensusValue {
+  id: String
+  mean: Float
+  calendarYear: Int
+  calendarQuarter: Int
+  fiscalYear: Int
+  fiscalQuarter: Int
+  high: Float
+  low: Float
+  numofest: Int
+}
+
+type BussinessSummary {
+  content: String
+}
+
+type Sector {
+  id: String!
+  name: String
+}
+
+type Fundamental {
+  eps: Float
+  market_cap: Float
+  shares: Float
+  dividend_per_share: Float
+  pe: Float
+  dividend: Float
+  beta: Float
+  yield: Float
+}
+
+type Price {
+  yesterday: Interday
+  latest: Interday
+}
+
+type Recommendation {
+  other_sector: [String]
+  industry: [String]
+  related: [String]
+  sector: [String]
+  business_type: [String]
+}
+
+type Playlist {
+  updatedAt: DateTime
+  list: [PlayListValue]
+}
+
+type PlayListValue {
+  name: String
+  value: String
+}
+
+type LossChance {
+  last: Float
+  updatedAt: DateTime
+}
+
+type Comparison {
+  business_type: ComparisonValue
+  industry: ComparisonValue
+  sector: ComparisonValue
+  market: ComparisonValue
+}
+
+type ComparisonValue {
+  member: Int
+  avg_jitta_score: Float
+  avg_price_diff: Float
+  rank: Int
+}
+
+type GraphPrice {
+  graphs: [GraphPriceValue]
+  first_graph_period: String
+}
+
+type GraphPriceValue {
+  linePrice: Float
+  stockPrice: Float
+}
+
+type PriceCorrelation {
+  stock_id: String
+  corr: Float
+}
+
+type QuarterValues {
+  quarter: String
+  high_low_price: QuarterValuesHighLowPrice
+  average_values: [QuarterValueData]
+  average_prices: [QuarterValueData]
+  average_volumes: [QuarterValueData]
+  volume: [QuarterValueData]
+  price: QuarterValuesPrice
+}
+
+type QuarterValuesHighLowPrice {
+  low: HighLowPrice
+  high: HighLowPrice
+}
+
+type HighLowPrice {
+  price: Float
+  date: Date
+}
+
+# A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+scalar Date
+
+type QuarterValueData {
+  id: String
+  value: Float
+}
+
+type QuarterValuesPrice {
+  close: QuarterValuesPriceClose
+}
+
+type QuarterValuesPriceClose {
+  average: [QuarterValueData]
+  change: [QuarterValueData]
+  low: [QuarterValueData]
+  high: [QuarterValueData]
+  last: Float
+}
+
+enum GroupByEnum {
+  Month
+  Year
+}
+
+type InterdayResult {
+  count: Float
+  interdaysMonthly: [InterdayGroup]
+  interdaysYearly: [InterdayGroup]
+  interdays: [Interday]
+}
+
+type InterdayGroup {
+  low: Float
+  high: Float
+  timestamp: DateTime
+  averageVolume: Float
+  open: Float
+  close: Float
+}
+
+input RankingInput {
+  market: String!
+  sectors: [String]
+  page: Int
+  limit: Int
+}
+
+type RankingResult {
+  count: Int
+  data: [StockAlgoliaExplore]
+}
+
+type StockAlgoliaExplore {
+  stockId: Int!
+  jittaScore: Float
+  rank: Int
+  updatedAt: DateTime
+  id: String
+  nativeName: String
+  latestPriceDiff: PriceDiffItem
+  exchange: String
+  sector: Sector
+  industry: String
+  name: String
+  symbol: String
+  market: String
+  latestPrice: Float
+  graphs: [GraphPriceValue]
+  firstGraphqlPeriod: String
+  status: String
+  latestLossChance: Float
+  currency: String
+  jittaRankScore: Float
+  title: String
+}
+
+type PriceDiffItem implements ScopeItem {
+  id: ID
+  year: Int
+  month: Int
+  quarter: Int
+  day: Int
+  value: Float
+  type: String
+  percent: String
+}
+
+input TranslateInput {
+  text: String
+}
+
+type TranslateResult {
+  text: String
+}
+
+input Country {
+  name: String
+  weight: Float
+}
+
+type SearchResult {
+  symbol: String
+  name: String
+  localName: [String]
+  id: String
+  exchange: String
+  market: String
+  jitta_score: Float
+}
+
+type User {
+  userId: String
+  _id: String
+  name: String
+  picture: String
+  phoneNumber: String
+  emails: [UserEmail]
+  email: String
+  acl: Any
+  isNewUser: Boolean
+  setting: Setting
+  badge: Int
+}
+
+type UserEmail {
+  email: String
+  verify: Boolean
+}
+
+type Setting {
+  language: String
+  theme: String
+  defaultMarket: String
+  notifications: NotificationSetting
+}
+
+type NotificationSetting {
+  financialUpdate: Boolean
+}
+
+input FollowingInput {
+  page: Int
+  limit: Int
+}
+
+type FollowingData {
+  total: Int
+  list: [FollowingStockData]
+}
+
+type FollowingStockData {
+  stock: Stock
+  value: FollowingStockValue
+}
+
+type FollowingStockValue {
+  created: DateTime
+  status: String
+}
+
+type ListNotifications {
+  count: Int
+  notifications: [NotificationInterface]
+}
+
+interface NotificationInterface {
+  id: String!
+  title: String!
+  message: String!
+  read: Boolean
+  createdAt: DateTime
+}
+
+type PageGroup {
+  id: String
+  title: String
+  subTitle: String
+  pages: [PageInterface]
+}
+
+interface PageInterface {
+  id: String!
+  title: String!
+  subTitle: String
+  text: String
+  url: String
+  deepLinkUrl: String
+  coverImage: String
+}
+
+type InvestingMixPage implements PageInterface {
+  id: String!
+  title: String!
+  subTitle: String
+  text: String
+  url: String
+  deepLinkUrl: String
+  coverImage: String
+  stocks: [Stock]
+}
+
+type DemographicQuestionList {
+  questionList: [DemographicQuestion]
+}
+
+type DemographicQuestion {
+  id: Int
+  questionTitle: String
+  choice: [DemographicChoice]
+}
+
+type DemographicChoice {
+  id: Int
+  choiceTitle: String
+  image: String
+}
+
+input NextInvestingMixQuestionInput {
+  id: Int!
+  previousQuestionId: Int
+  choiceId: Int
+}
+
+type InvestingMixQuestion {
+  id: Int!
+  question: String!
+  choice: [InvestingMixChoice]!
+  type: String
+  isFirstQuestion: Boolean
+  isLastQuestion: Boolean
+  total: Int
+  description: String
+}
+
+type InvestingMixChoice {
+  id: Int!
+  title: String!
+  stockAlias: String
+  titleEmoji: String
+}
+
+type Mutation {
+  loginWithEmail(input: LoginWithEmailInput!): LoginResponse
+  loginWithFacebook(input: LoginWithFacebookInput!): LoginResponse
+  loginWithGoogle(input: LoginWithGoogleInput!): LoginResponse
+  loginWithApple(input: LoginWithAppleInput): LoginResponse
+  follow(alias: String, id: String, stockId: Int): Stock
+  unFollow(alias: String, id: String, stockId: Int): Stock
+  logout: Boolean
+  syncDevice(input: SyncDeviceInput): SyncDeviceResult
+  pushNoti(input: PushNotiInput): PushNotiResult
+  pushNotiFromUserId(input: PushNotiFromUserIdInput): PushNotiResult
+  syncSetting(input: SettingInput!): User
+  submitDemographic(input: [SubmitDemographicInput]): InvestingMixQuestion
+  submitAnswer(input: [SubmitAnswerInput]!): InvestingMixPage
+  clearBadge: Badge
+}
+
+input LoginWithEmailInput {
+  email: String!
+  password: String!
+}
+
+type LoginResponse {
+  data: LoginResponseData
+}
+
+type LoginResponseData {
+  userId: String
+  token: String
+}
+
+input LoginWithFacebookInput {
+  accessToken: String!
+}
+
+input LoginWithGoogleInput {
+  idToken: String!
+  accessToken: String!
+}
+
+input LoginWithAppleInput {
+  idToken: String
+  setting: SettingInput
+}
+
+input SettingInput {
+  language: String
+  theme: String
+  defaultMarket: String
+  notifications: NotificationInput
+}
+
+input NotificationInput {
+  financialUpdate: Boolean
+}
+
+input SyncDeviceInput {
+  deviceType: Int!
+  notiType: Int!
+  uuid: ID!
+  language: String
+  userId: ID
+}
+
+type SyncDeviceResult {
+  playerId: ID
+}
+
+input PushNotiInput {
+  playerIds: [String]!
+  template: String
+}
+
+type PushNotiResult {
+  success: Boolean
+}
+
+input PushNotiFromUserIdInput {
+  userIds: [String]!
+}
+
+input SubmitDemographicInput {
+  questionId: Int
+  choiceId: Int
+}
+
+input SubmitAnswerInput {
+  questionId: Int!
+  selectedChoiceId: Int!
+  stockAlias: String
+}
+
+type Badge {
+  badge: Int
+}
+
+# A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+scalar Time
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+type JittaLineValue {
+  month: String
+  value: Float
+}
+
+type DefaultScopeItem implements ScopeItem {
+  id: ID
+  year: Int
+  month: Int
+  quarter: Int
+  day: Int
+  value: Float
+}
+
+type SignRawIPO implements SignRaw {
+  name: String
+  value: Int
+}
+
+type SignRawValues implements SignRaw {
+  name: String
+  values: [ScopeItem]
+}
+
+enum NotificationType {
+  FINANCIAL_UPDATE
+  BROADCAST
+}
+
+type BroadcastNotification implements NotificationInterface {
+  id: String!
+  title: String!
+  message: String!
+  read: Boolean
+  createdAt: DateTime
+}
+
+type FinancialUpdateNotification implements NotificationInterface {
+  id: String!
+  title: String!
+  message: String!
+  read: Boolean
+  createdAt: DateTime
+  previousScore: String
+  currentScore: String
+  financialUpdated: String
+  stock: Stock
+}
+
+type MockupStock {
+  alias: String
+  name: String
+  symbol: String
+  stockId: Int
+  price: Price
+}
+
+enum PageType {
+  STOCK_THEME
+}
+
+type StockThemePage implements PageInterface {
+  id: String!
+  title: String!
+  subTitle: String
+  text: String
+  url: String
+  deepLinkUrl: String
+  coverImage: String
+  stocks: [Stock]
+}
+
+type ChoiceNextQuestion {
+  id: Int!
+  nextQuestionId: Int!
+}
+
+type InvestingMixPathItem {
+  id: Int!
+  previousQuestionId: Int
+  choiceNextQuestionId: [ChoiceNextQuestion]
+}

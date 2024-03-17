@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.apollo3)
 }
 
 android {
@@ -31,6 +33,11 @@ android {
         jvmTarget = "1.8"
     }
 }
+apollo {
+    service("service") {
+        packageName.set("com.mamafarm.android.network")
+    }
+}
 
 dependencies {
 
@@ -40,4 +47,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //APOLLO
+    implementation(libs.apollo3.runtime)
+
+    //HILT
+    implementation(libs.dagger.hilt.android)
+    annotationProcessor(libs.dagger.hilt.compiler)
 }

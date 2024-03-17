@@ -1,0 +1,6 @@
+query Query {
+    availableCountry {
+        name
+        flag
+    }
+}
