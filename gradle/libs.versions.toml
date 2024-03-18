@@ -14,8 +14,9 @@ navigation = "2.7.7"
 fragmentKtx = "1.6.2"
 splashscreen = "1.0.0-beta02"
 swiperefreshlayout = "1.2.0-alpha01"
-hilt = "2.48"
+hilt = "2.48.1"
 ksp = "1.9.23-1.0.19"
+apollo3 = "4.0.0-beta.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +43,8 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+apollo3-runtime = { group = "com.apollographql.apollo3", name = "apollo-runtime", version.ref = "apollo3" }
+apollo3-rx = { group = "com.apollographql.apollo3", name = "apollo-rx3-support", version.ref = "apollo3" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -50,3 +53,4 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 androidxNavigationSafeargsKotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+apollo3 = { id = "com.apollographql.apollo3", version.ref = "apollo3" }

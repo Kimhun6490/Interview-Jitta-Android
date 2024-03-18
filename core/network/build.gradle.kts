@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("kapt")
+    alias(libs.plugins.hiltAndroid)
+    alias(libs.plugins.apollo3)
 }
 
 android {
@@ -31,6 +34,12 @@ android {
         jvmTarget = "1.8"
     }
 }
+apollo {
+    service("service") {
+        generateKotlinModels.set(true)
+        packageName.set("com.mamafarm.android.network")
+    }
+}
 
 dependencies {
 
@@ -40,4 +49,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //APOLLO
+    implementation(libs.apollo3.runtime)
+    implementation(libs.apollo3.rx)
+
+    //HILT
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+}
+kapt {
+    correctErrorTypes = true
 }
