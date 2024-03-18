@@ -44,6 +44,7 @@ androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "s
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 apollo3-runtime = { group = "com.apollographql.apollo3", name = "apollo-runtime", version.ref = "apollo3" }
+apollo3-rx = { group = "com.apollographql.apollo3", name = "apollo-rx3-support", version.ref = "apollo3" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

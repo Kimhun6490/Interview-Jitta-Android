@@ -12,7 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
+import com.mamafarm.android.ranking.model.JittaCountry
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: JittaFragmentMarketBinding
@@ -30,6 +33,7 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupView()
+        loadData()
     }
 
     override fun onResume() {
@@ -46,7 +50,6 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         binding.refreshLayout.isEnabled = p1 == 0
     }
 
-
     private fun setupView() {
         setupRecycleView()
         setupSpinner()
@@ -57,8 +60,13 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
-        val countries = arrayOf("Java", "PHP", "Kotlin", "Javascript", "Python", "Swift")
-        val countryAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, countries)
+
+        //COUNTRY SPINNER
+        val countryAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_item,
+            emptyArray<JittaCountry>()
+        )
         countryAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         with(binding.spCountry) {
             adapter = countryAdapter
@@ -67,10 +75,26 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
             layoutParams = params
             setPopupBackgroundResource(R.color.background_light)
         }
+
+        //SECTOR SPINNER
     }
 
     private fun setupRecycleView() {
 
+    }
+
+    private fun loadData() {
+        viewModel.getAvailableCountries()
+        viewModel.countriesResult.observe(viewLifecycleOwner) { updateUiSpinner(it) }
+    }
+
+    private fun updateUiSpinner(countries: List<JittaCountry>) {
+        val newCountryAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_item,
+            countries.map { it.name }
+        )
+        binding.spCountry.adapter = newCountryAdapter
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

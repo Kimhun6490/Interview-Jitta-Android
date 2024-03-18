@@ -52,6 +52,7 @@ dependencies {
 
     //APOLLO
     implementation(libs.apollo3.runtime)
+    implementation(libs.apollo3.rx)
 
     //HILT
     implementation(libs.dagger.hilt.android)
