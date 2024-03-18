@@ -8,11 +8,11 @@ import javax.inject.Inject
 
 interface CountryApi {
 
-    suspend fun queryAvailableCountry(): BaseResponse<List<QueryAvailableCountryResponse>>
+    suspend fun queryAvailableCountries(): BaseResponse<List<QueryAvailableCountryResponse>>
 
     class Impl @Inject constructor(private val client: ApolloClient) : CountryApi {
 
-        override suspend fun queryAvailableCountry(): BaseResponse<List<QueryAvailableCountryResponse>> {
+        override suspend fun queryAvailableCountries(): BaseResponse<List<QueryAvailableCountryResponse>> {
             return try {
                 val query = CountryWithNameAndFlagQuery()
                 val response = client.query(query).execute()

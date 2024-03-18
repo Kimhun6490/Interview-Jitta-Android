@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
 import com.mamafarm.android.ranking.model.JittaCountry
+import com.mamafarm.android.ranking.model.JittaSectorType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -77,6 +78,19 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         }
 
         //SECTOR SPINNER
+        val sectorAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_item,
+            emptyArray<JittaSectorType>()
+        )
+        sectorAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        with(binding.spFilter) {
+            adapter = countryAdapter
+            setSelection(0, false)
+            onItemSelectedListener = this@JittaRankingFragment
+            layoutParams = params
+            setPopupBackgroundResource(R.color.background_light)
+        }
     }
 
     private fun setupRecycleView() {
@@ -85,16 +99,33 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
 
     private fun loadData() {
         viewModel.getAvailableCountries()
-        viewModel.countriesResult.observe(viewLifecycleOwner) { updateUiSpinner(it) }
+        viewModel.getListSectorType()
+        viewModel.countriesResult.observe(viewLifecycleOwner) { updateUiCountrySpinner(it) }
+        viewModel.listSectorTypeResult.observe(viewLifecycleOwner) { updateUiSectorSpinner(it) }
     }
 
-    private fun updateUiSpinner(countries: List<JittaCountry>) {
-        val newCountryAdapter = ArrayAdapter(
+    private fun updateUiCountrySpinner(countries: List<JittaCountry>) {
+        val newAdapter = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
             countries.map { it.name }
         )
-        binding.spCountry.adapter = newCountryAdapter
+        binding.spCountry.adapter = newAdapter
+        val index = countries.indexOfFirst { it.name.lowercase() == "Thailand".lowercase() }
+        if (index != -1) binding.spCountry.setSelection(index)
+    }
+
+    private fun updateUiSectorSpinner(sectors: List<JittaSectorType>) {
+        val list = mutableListOf("All sectors")
+        list.addAll(sectors.map { it.name })
+
+        val newAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_item,
+            list
+        )
+        binding.spFilter.adapter = newAdapter
+        binding.spFilter.setSelection(0)
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
