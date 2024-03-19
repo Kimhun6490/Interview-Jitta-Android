@@ -49,6 +49,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //NAVIGATION COMPONENT
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+
     //HILT
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)

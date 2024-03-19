@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
@@ -115,7 +117,10 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
 
     private fun setupRecycleView() {
         rankingAdapter = JittaRankingPagingAdapter {
-            Toast.makeText(requireContext(), "id ${it.id}", Toast.LENGTH_SHORT).show()
+            val request = NavDeepLinkRequest.Builder
+                .fromUri("android-app://example.google.app/jittaStockDetailsFragment".toUri())
+                .build()
+            findNavController().navigate(request)
         }
         binding.refreshLayout.setOnRefreshListener {
             viewModel.refresh()

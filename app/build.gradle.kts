@@ -55,6 +55,7 @@ android {
 dependencies {
     implementation(project(":core:ui"))
     implementation(project(":feature:ranking"))
+    implementation(project(":feature:stockdetails"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
