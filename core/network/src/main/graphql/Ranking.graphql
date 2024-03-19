@@ -1,0 +1,14 @@
+query RankingQuery($market: String!, $page: Int @optional, $limit: Int @optional) {
+    jittaRanking(filter:{ market: $market, page: $page, limit: $limit }) {
+        count
+        data {
+            id
+            name
+            sector {
+                id
+                name
+            }
+            rank
+        }
+    }
+}

@@ -1,4 +1,4 @@
-query Sectors {
+query SectorsQuery {
     listJittaSectorType {
         id
         name

@@ -2,23 +2,37 @@ package com.mamafarm.android.ranking.presentation
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
 import com.mamafarm.android.ranking.model.JittaCountry
+import com.mamafarm.android.ranking.model.JittaSectorType
+import com.mamafarm.android.ui.decoration.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: JittaFragmentMarketBinding
+    private lateinit var countryAdapter: ArrayAdapter<JittaCountry>
+    private lateinit var sectorAdapter: ArrayAdapter<JittaSectorType>
+    private lateinit var rankingAdapter: JittaRankingPagingAdapter
     private val viewModel: JittaRankingViewModel by viewModels()
 
     override fun onCreateView(
@@ -48,6 +62,13 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
 
     override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
         binding.refreshLayout.isEnabled = p1 == 0
+
+        val height = p0?.measuredHeight ?: 50
+        val percentage = (-p1) / height.toFloat()
+        val startColor = ContextCompat.getColor(requireContext(), R.color.white)
+        val endColor = ContextCompat.getColor(requireContext(), R.color.black)
+        val currentColor = ColorUtils.blendARGB(startColor, endColor, percentage)
+        binding.tvHeader.setTextColor(currentColor)
     }
 
     private fun setupView() {
@@ -62,7 +83,7 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         )
 
         //COUNTRY SPINNER
-        val countryAdapter = ArrayAdapter(
+        countryAdapter = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
             emptyArray<JittaCountry>()
@@ -77,28 +98,103 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         }
 
         //SECTOR SPINNER
+        sectorAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_item,
+            emptyArray<JittaSectorType>()
+        )
+        sectorAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        with(binding.spFilter) {
+            adapter = countryAdapter
+            setSelection(0, false)
+            onItemSelectedListener = this@JittaRankingFragment
+            layoutParams = params
+            setPopupBackgroundResource(R.color.background_light)
+        }
     }
 
     private fun setupRecycleView() {
+        rankingAdapter = JittaRankingPagingAdapter {
+            Toast.makeText(requireContext(), "id ${it.id}", Toast.LENGTH_SHORT).show()
+        }
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.refresh()
+        }
+        binding.rvRanking.addItemDecoration(MarginItemDecoration(24))
+        binding.rvRanking.adapter = rankingAdapter
+        binding.rvRanking.layoutManager = LinearLayoutManager(context)
+        lifecycleScope.launch {
+            viewModel.flow.collect { pagingData ->
+                rankingAdapter.submitData(pagingData)
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            rankingAdapter.loadStateFlow.collectLatest { loadState ->
+                when (loadState.refresh) {
+                    is LoadState.Loading -> {
+                        binding.refreshLayout.isRefreshing = false
+                    }
 
+                    is LoadState.NotLoading -> {
+                        Log.i("paging_data", "not loading")
+                    }
+
+                    is LoadState.Error -> {
+                        Log.i("paging_data", "error")
+                    }
+                }
+                if (loadState.append.endOfPaginationReached) {
+                    if (rankingAdapter.itemCount < 1) {
+                        Log.i("paging_data", "end of page")
+                    }
+                }
+            }
+        }
     }
 
     private fun loadData() {
         viewModel.getAvailableCountries()
-        viewModel.countriesResult.observe(viewLifecycleOwner) { updateUiSpinner(it) }
+        viewModel.getListSectorType()
+        viewModel.countriesResult.observe(viewLifecycleOwner) { updateUiCountrySpinner(it) }
+        viewModel.listSectorTypeResult.observe(viewLifecycleOwner) { updateUiSectorSpinner(it) }
     }
 
-    private fun updateUiSpinner(countries: List<JittaCountry>) {
-        val newCountryAdapter = ArrayAdapter(
+    private fun updateUiCountrySpinner(countries: List<JittaCountry>) {
+        val newAdapter = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
             countries.map { it.name }
         )
-        binding.spCountry.adapter = newCountryAdapter
+        binding.spCountry.adapter = newAdapter
+        val index = countries.indexOfFirst { it.name.lowercase() == "Thailand".lowercase() }
+        if (index != -1) binding.spCountry.setSelection(index)
+    }
+
+    private fun updateUiSectorSpinner(sectors: List<JittaSectorType>) {
+        val list = mutableListOf("All sectors")
+        list.addAll(sectors.map { it.name })
+
+        val newAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_item,
+            list
+        )
+        binding.spFilter.adapter = newAdapter
+        binding.spFilter.setSelection(0)
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        p0?.let { nonNullAdapter ->
+            when (nonNullAdapter.id) {
+                binding.spFilter.id -> {}
+                binding.spCountry.id -> {
+                    val selectedCountry = nonNullAdapter.getItemAtPosition(p2) as String //TEMP
+                    viewModel.refresh(market = "th")
+                }
 
+                else -> Unit
+            }
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

@@ -57,6 +57,9 @@ dependencies {
     //HILT
     implementation(libs.dagger.hilt.android)
     kapt(libs.dagger.hilt.compiler)
+
+    //PAGING DATA
+    implementation(libs.paging.runtime)
 }
 kapt {
     correctErrorTypes = true
