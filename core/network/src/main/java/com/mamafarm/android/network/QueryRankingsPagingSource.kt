@@ -14,10 +14,7 @@ class QueryRankingsPagingSource @Inject constructor(
 ) :
     PagingSource<Int, QueryRankingResponse>() {
     override fun getRefreshKey(state: PagingState<Int, QueryRankingResponse>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }
+        return null
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, QueryRankingResponse> {
