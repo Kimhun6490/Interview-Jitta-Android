@@ -23,8 +23,8 @@ class JittaRankingPagingAdapter(
         fun bind(item: JittaRank?) {
             item?.let { nonNullItem ->
                 binding.root.setOnClickListener { onItemClicked.invoke(nonNullItem) }
-                binding.tvRank.text = "${nonNullItem.rank}/total"
-                binding.tvCode.text = nonNullItem.code
+                binding.tvRank.text = "${nonNullItem.rank}/${nonNullItem.total}"
+                binding.tvCode.text = nonNullItem.id
                 binding.tvTitle.text = nonNullItem.title
             }
         }

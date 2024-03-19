@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
 
         <TextView
             android:id="@+id/tvHeader"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -31,21 +33,26 @@
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    app:title="@string/jitta_toolbar_title">
+                    android:layout_height="wrap_content"
+                    app:contentScrim="#00FFFFFF"
+                    app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+                    app:statusBarScrim="#00FFFFFF"
+                    app:titleEnabled="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:minHeight="?attr/actionBarSize"
                         android:orientation="vertical">
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Headline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/jitta_appbar_title" />
+                            android:text="@string/jitta_toolbar_title" />
 
                         <TextView
+                            style="@style/TextAppearance.AppCompat.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/jitta_appbar_description" />
@@ -70,29 +77,32 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        app:cardCornerRadius="1dp"
-                        app:strokeColor="@color/md_theme_light_outline"
+                        app:cardCornerRadius="4dp"
+                        app:strokeColor="@color/md_theme_light_outlineVariant"
                         app:strokeWidth="1dp">
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/spCountry"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dialog" />
 
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
                         android:layout_weight="1"
-                        app:cardCornerRadius="1dp"
-                        app:strokeColor="@color/md_theme_light_outline"
+                        app:cardCornerRadius="4dp"
+                        app:strokeColor="@color/md_theme_light_outlineVariant"
                         app:strokeWidth="1dp">
 
                         <androidx.appcompat.widget.AppCompatSpinner
                             android:id="@+id/spFilter"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dialog" />
 
                     </com.google.android.material.card.MaterialCardView>
 

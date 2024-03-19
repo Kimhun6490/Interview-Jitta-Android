@@ -10,6 +10,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +21,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
 import com.mamafarm.android.ranking.model.JittaCountry
 import com.mamafarm.android.ranking.model.JittaSectorType
+import com.mamafarm.android.ui.decoration.MarginItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -59,6 +62,13 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
 
     override fun onOffsetChanged(p0: AppBarLayout?, p1: Int) {
         binding.refreshLayout.isEnabled = p1 == 0
+
+        val height = p0?.measuredHeight ?: 50
+        val percentage = (-p1) / height.toFloat()
+        val startColor = ContextCompat.getColor(requireContext(), R.color.white)
+        val endColor = ContextCompat.getColor(requireContext(), R.color.black)
+        val currentColor = ColorUtils.blendARGB(startColor, endColor, percentage)
+        binding.tvHeader.setTextColor(currentColor)
     }
 
     private fun setupView() {
@@ -110,6 +120,7 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         binding.refreshLayout.setOnRefreshListener {
             viewModel.refresh()
         }
+        binding.rvRanking.addItemDecoration(MarginItemDecoration(24))
         binding.rvRanking.adapter = rankingAdapter
         binding.rvRanking.layoutManager = LinearLayoutManager(context)
         lifecycleScope.launch {

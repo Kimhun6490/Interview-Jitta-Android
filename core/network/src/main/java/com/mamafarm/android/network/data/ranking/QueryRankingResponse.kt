@@ -6,5 +6,6 @@ data class QueryRankingResponse(
     val id: String,
     val name: String?,
     val sector: QuerySectorResponse?,
-    val rank: Int?
+    val rank: Int?,
+    val total: Int?
 )
