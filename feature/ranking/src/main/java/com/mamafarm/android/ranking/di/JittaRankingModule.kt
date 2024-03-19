@@ -1,6 +1,7 @@
 package com.mamafarm.android.ranking.di
 
 import com.mamafarm.android.ranking.model.JittaCountryMapper
+import com.mamafarm.android.ranking.model.JittaRankMapper
 import com.mamafarm.android.ranking.model.JittaSectorTypeMapper
 import dagger.Module
 import dagger.Provides
@@ -16,4 +17,7 @@ class JittaRankingModule {
 
     @Provides
     fun providesJittaSectorTypeMapper() = JittaSectorTypeMapper()
+
+    @Provides
+    fun providesJittaRankMapper() = JittaRankMapper()
 }

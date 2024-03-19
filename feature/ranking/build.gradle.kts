@@ -58,4 +58,7 @@ dependencies {
 
     //SWIPE-REFRESH LAYOUT
     implementation(libs.androidx.swiperefreshlayout)
+
+    //PAGING DATA
+    implementation(libs.paging.runtime)
 }

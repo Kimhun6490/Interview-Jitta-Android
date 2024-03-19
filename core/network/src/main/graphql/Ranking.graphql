@@ -3,6 +3,7 @@ query RankingQuery($market: String!, $first: Int @optional, $offset: Int @option
         count
         data {
             id
+            name
             sector {
                 id
                 name

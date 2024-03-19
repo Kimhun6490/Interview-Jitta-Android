@@ -32,14 +32,13 @@ interface RankingApi {
 
                 val count = jittaRanking.count ?: return BaseResponse.Error(IllegalStateException())
                 val data = jittaRanking.data ?: return BaseResponse.Error(IllegalStateException())
-                if (data.isEmpty()) return BaseResponse.Error(IllegalStateException())
 
                 val ranking = data
                     .mapNotNull { it }
                     .map {
                         val sector = it.sector!!
                         val sectorRes = QuerySectorResponse(sector.id, sector.name)
-                        QueryRankingResponse(it.id!!, sectorRes, it.rank)
+                        QueryRankingResponse(it.id!!, it.name, sectorRes, it.rank)
                     }
 
                 val list = QueryRankingListResponse(count, ranking)

@@ -22,8 +22,7 @@ interface CountryApi {
                     .mapNotNull { it }
                     .map { QueryAvailableCountryResponse(it.name, it.flag) }
 
-                if (countries.isEmpty()) BaseResponse.Error(IllegalStateException())
-                else BaseResponse.Success(countries)
+                BaseResponse.Success(countries)
             } catch (ex: Exception) {
                 BaseResponse.Error(ex)
             }

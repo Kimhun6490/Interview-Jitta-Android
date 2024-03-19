@@ -22,8 +22,7 @@ interface SectorApi {
                     .mapNotNull { it }
                     .map { QuerySectorResponse(it.id, it.name) }
 
-                if (sectors.isEmpty()) BaseResponse.Error(IllegalStateException())
-                else BaseResponse.Success(sectors)
+                BaseResponse.Success(sectors)
             } catch (ex: Exception) {
                 BaseResponse.Error(ex)
             }

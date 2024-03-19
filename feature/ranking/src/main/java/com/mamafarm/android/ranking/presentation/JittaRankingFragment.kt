@@ -2,6 +2,7 @@ package com.mamafarm.android.ranking.presentation
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +11,19 @@ import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
 import com.mamafarm.android.ranking.model.JittaCountry
 import com.mamafarm.android.ranking.model.JittaSectorType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: JittaFragmentMarketBinding
+    private lateinit var rankingAdapter: JittaRankingPagingAdapter
     private val viewModel: JittaRankingViewModel by viewModels()
 
     override fun onCreateView(
@@ -94,7 +98,13 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     }
 
     private fun setupRecycleView() {
-
+        rankingAdapter = JittaRankingPagingAdapter {}
+        binding.rvRanking.adapter = rankingAdapter
+        lifecycleScope.launch {
+            viewModel.getRankingList().collect { pagingData ->
+                rankingAdapter.submitData(pagingData)
+            }
+        }
     }
 
     private fun loadData() {

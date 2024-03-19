@@ -4,15 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.mamafarm.android.network.QueryRankingsPagingSource
+import com.mamafarm.android.network.data.ranking.QueryRankingResponse
 import com.mamafarm.android.network.repository.CountryApi
+import com.mamafarm.android.network.repository.RankingApi
 import com.mamafarm.android.network.repository.SectorApi
 import com.mamafarm.android.network.response.BaseResponse
 import com.mamafarm.android.ranking.model.JittaCountry
 import com.mamafarm.android.ranking.model.JittaCountryMapper
+import com.mamafarm.android.ranking.model.JittaRank
+import com.mamafarm.android.ranking.model.JittaRankMapper
 import com.mamafarm.android.ranking.model.JittaSectorType
 import com.mamafarm.android.ranking.model.JittaSectorTypeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +32,10 @@ import javax.inject.Inject
 class JittaRankingViewModel @Inject constructor(
     private val countryRepository: CountryApi.Impl,
     private val sectorRepository: SectorApi.Impl,
+    private val rankingRepository: RankingApi.Impl,
     private val countryMapper: JittaCountryMapper,
     private val sectorTypeMapper: JittaSectorTypeMapper,
+    private val rankMapper: JittaRankMapper,
 ) : ViewModel() {
 
     private val _countriesResult by lazy { MutableLiveData<List<JittaCountry>>() }
@@ -50,5 +64,20 @@ class JittaRankingViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getRankingList(): Flow<PagingData<JittaRank>> {
+        return Pager(
+            PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false,
+                initialLoadSize = 10
+            )
+        ) { QueryRankingsPagingSource(rankingRepository) }
+            .flow
+            .cachedIn(viewModelScope)
+            .map { pagingData ->
+                pagingData.map { rankMapper.map(it) }
+            }
     }
 }
