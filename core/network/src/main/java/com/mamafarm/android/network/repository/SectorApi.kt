@@ -2,7 +2,7 @@ package com.mamafarm.android.network.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.mamafarm.android.network.SectorsQuery
-import com.mamafarm.android.network.data.QuerySectorResponse
+import com.mamafarm.android.network.data.sector.QuerySectorResponse
 import com.mamafarm.android.network.response.BaseResponse
 import javax.inject.Inject
 
@@ -17,11 +17,12 @@ interface SectorApi {
                 val query = SectorsQuery()
                 val response = client.query(query).execute()
                 val listJittaSectorType = response.data?.listJittaSectorType
-                val sectors = listJittaSectorType?.mapNotNull { it }?.map {
-                    QuerySectorResponse(name = it.name, id = it.id)
-                }
+                    ?: return BaseResponse.Error(IllegalStateException())
+                val sectors = listJittaSectorType
+                    .mapNotNull { it }
+                    .map { QuerySectorResponse(it.id, it.name) }
 
-                if (sectors.isNullOrEmpty()) BaseResponse.Error(IllegalStateException())
+                if (sectors.isEmpty()) BaseResponse.Error(IllegalStateException())
                 else BaseResponse.Success(sectors)
             } catch (ex: Exception) {
                 BaseResponse.Error(ex)

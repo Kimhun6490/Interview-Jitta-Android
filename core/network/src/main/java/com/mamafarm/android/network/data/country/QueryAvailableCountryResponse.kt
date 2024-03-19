@@ -1,4 +1,4 @@
-package com.mamafarm.android.network.data
+package com.mamafarm.android.network.data.country
 
 data class QueryAvailableCountryResponse(
     val name: String?,

@@ -1,7 +1,7 @@
 package com.mamafarm.android.ranking.model
 
 import com.mamafarm.android.common.mapper.Mapper
-import com.mamafarm.android.network.data.QuerySectorResponse
+import com.mamafarm.android.network.data.sector.QuerySectorResponse
 
 class JittaSectorTypeMapper : Mapper<QuerySectorResponse, JittaSectorType> {
 

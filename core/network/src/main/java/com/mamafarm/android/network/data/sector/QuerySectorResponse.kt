@@ -1,4 +1,4 @@
-package com.mamafarm.android.network.data
+package com.mamafarm.android.network.data.sector
 
 data class QuerySectorResponse(
     val id: String,

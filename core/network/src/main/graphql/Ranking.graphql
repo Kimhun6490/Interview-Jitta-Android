@@ -1,0 +1,13 @@
+query RankingQuery($market: String!, $first: Int @optional, $offset: Int @optional) {
+    jittaRanking(filter:{ market: $market }) {
+        count
+        data {
+            id
+            sector {
+                id
+                name
+            }
+            rank
+        }
+    }
+}
