@@ -9,20 +9,26 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.mamafarm.android.market.databinding.JittaFragmentMarketBinding
 import com.mamafarm.android.ranking.model.JittaCountry
 import com.mamafarm.android.ranking.model.JittaSectorType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     AdapterView.OnItemSelectedListener {
     private lateinit var binding: JittaFragmentMarketBinding
+    private lateinit var countryAdapter: ArrayAdapter<JittaCountry>
+    private lateinit var sectorAdapter: ArrayAdapter<JittaSectorType>
     private lateinit var rankingAdapter: JittaRankingPagingAdapter
     private val viewModel: JittaRankingViewModel by viewModels()
 
@@ -67,7 +73,7 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         )
 
         //COUNTRY SPINNER
-        val countryAdapter = ArrayAdapter(
+        countryAdapter = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
             emptyArray<JittaCountry>()
@@ -82,7 +88,7 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         }
 
         //SECTOR SPINNER
-        val sectorAdapter = ArrayAdapter(
+        sectorAdapter = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
             emptyArray<JittaSectorType>()
@@ -98,11 +104,39 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     }
 
     private fun setupRecycleView() {
-        rankingAdapter = JittaRankingPagingAdapter {}
+        rankingAdapter = JittaRankingPagingAdapter {
+            Toast.makeText(requireContext(), "id ${it.id}", Toast.LENGTH_SHORT).show()
+        }
+        binding.refreshLayout.setOnRefreshListener {
+            viewModel.refresh()
+        }
         binding.rvRanking.adapter = rankingAdapter
+        binding.rvRanking.layoutManager = LinearLayoutManager(context)
         lifecycleScope.launch {
-            viewModel.getRankingList().collect { pagingData ->
+            viewModel.flow.collect { pagingData ->
                 rankingAdapter.submitData(pagingData)
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            rankingAdapter.loadStateFlow.collectLatest { loadState ->
+                when (loadState.refresh) {
+                    is LoadState.Loading -> {
+                        binding.refreshLayout.isRefreshing = false
+                    }
+
+                    is LoadState.NotLoading -> {
+                        Log.i("paging_data", "not loading")
+                    }
+
+                    is LoadState.Error -> {
+                        Log.i("paging_data", "error")
+                    }
+                }
+                if (loadState.append.endOfPaginationReached) {
+                    if (rankingAdapter.itemCount < 1) {
+                        Log.i("paging_data", "end of page")
+                    }
+                }
             }
         }
     }
@@ -139,7 +173,17 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        p0?.let { nonNullAdapter ->
+            when (nonNullAdapter.id) {
+                binding.spFilter.id -> {}
+                binding.spCountry.id -> {
+                    val selectedCountry = nonNullAdapter.getItemAtPosition(p2) as String //TEMP
+                    viewModel.refresh(market = "th")
+                }
 
+                else -> Unit
+            }
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

@@ -12,7 +12,8 @@ class JittaRankMapper : Mapper<QueryRankingResponse, JittaRank> {
             title = from.name ?: "",
             id = from.id,
             code = "code",
-            rank = from.rank ?: -1
+            rank = from.rank ?: -1,
+            total = 0
         )
     }
 }
