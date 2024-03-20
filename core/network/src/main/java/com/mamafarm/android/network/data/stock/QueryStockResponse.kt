@@ -10,5 +10,6 @@ data class QueryStockResponse(
     val isFollowing: Boolean?,
     val sector: QuerySectorResponse?,
     val industry: String?,
-    val company: QueryCompanyResponse?
+    val company: QueryCompanyResponse?,
+    val jitta: QueryJittaResponse?
 )

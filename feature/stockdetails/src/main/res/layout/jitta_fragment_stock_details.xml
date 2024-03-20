@@ -45,6 +45,7 @@
 
                 <ImageButton
                     android:id="@+id/btWise"
+                    style="@style/TextAppearance.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/baseline_library_books_24" />
@@ -56,6 +57,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,32 +106,42 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="@color/seed"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="4dp">
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvStockScore"
+                        style="@style/TextAppearance.MaterialComponents.Headline5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="N/A"
+                        android:textColor="@color/md_theme_light_onPrimary"
                         tools:text="7.36" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.MaterialComponents.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/jitta_score" />
+                        android:text="@string/jitta_score"
+                        android:textColor="@color/md_theme_light_onPrimary" />
                 </LinearLayout>
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btFollow"
+                style="@style/TextAppearance.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/md_theme_light_onPrimary"
                 tools:text="@string/jitta_follow" />
 
             <LinearLayout
                 android:id="@+id/llGraphDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -145,12 +157,14 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.textview.MaterialTextView
+                            style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="Price(15 Mar 2024)" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tvPrice"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="22.40" />
@@ -184,12 +198,107 @@
                 android:id="@+id/llFactors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/jitta_factors" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFactor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jitta_company_info" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.MaterialComponents.Body2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/jitta_company_sector" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvSector"
+                        style="@style/TextAppearance.MaterialComponents.Body2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        tools:text="Consumer staples" />
+
+                </LinearLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:dividerColor="@color/md_theme_light_outline" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/TextAppearance.MaterialComponents.Body2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/jitta_company_industry" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvIndustry"
+                        style="@style/TextAppearance.MaterialComponents.Body2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        tools:text="Food Product" />
+                </LinearLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:dividerColor="@color/md_theme_light_outline" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvWebsite"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:autoLink="web"
+                    android:textColorLink="@color/md_theme_light_primary"
+                    tools:text="www.google.com" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:dividerColor="@color/md_theme_light_outline" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

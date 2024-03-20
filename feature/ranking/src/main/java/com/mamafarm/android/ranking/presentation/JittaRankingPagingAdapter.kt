@@ -11,8 +11,7 @@ import com.mamafarm.android.ranking.model.JittaRank
 
 class JittaRankingPagingAdapter(
     private val onItemClicked: (JittaRank) -> Unit
-) :
-    PagingDataAdapter<JittaRank, JittaRankingPagingAdapter.JittaRankingViewHolder>(JittaRankDiffUtil()) {
+) : PagingDataAdapter<JittaRank, JittaRankingPagingAdapter.JittaRankingViewHolder>(JittaRankDiffUtil()) {
 
     class JittaRankingViewHolder(
         private val binding: JittaItemRankBinding,
