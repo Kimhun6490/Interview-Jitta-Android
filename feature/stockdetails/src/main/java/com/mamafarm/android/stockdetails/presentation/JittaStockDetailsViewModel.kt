@@ -8,6 +8,7 @@ import com.mamafarm.android.network.repository.StockApi
 import com.mamafarm.android.network.request.stock.QueryStockParamsRequest
 import com.mamafarm.android.network.response.BaseResponse
 import com.mamafarm.android.stockdetails.model.JittaStockDetailMapper
+import com.mamafarm.android.stockdetails.presentation.JittaStockDetailViewState.Loading.updateFollow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +33,15 @@ class JittaStockDetailsViewModel @Inject constructor(
                         stockDetailMapper.map(result.data)
                     )
                 )
+            }
+        }
+    }
+
+    fun followButtonClicked(follow: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentViewState = _viewState.value
+            (currentViewState as? JittaStockDetailViewState.Content)?.let { content ->
+                _viewState.postValue(content.updateFollow(follow))
             }
         }
     }
