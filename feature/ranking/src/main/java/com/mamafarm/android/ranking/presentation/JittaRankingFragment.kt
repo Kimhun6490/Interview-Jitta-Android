@@ -117,8 +117,10 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
 
     private fun setupRecycleView() {
         rankingAdapter = JittaRankingPagingAdapter {
+            val params = "id=${it.id}&stockId=${it.stockId}&rank=${it.rank}&total=${it.total}"
+            val uri = "android-app://example.google.app/jittaStockDetailsFragment?${params}".toUri()
             val request = NavDeepLinkRequest.Builder
-                .fromUri("android-app://example.google.app/jittaStockDetailsFragment".toUri())
+                .fromUri(uri)
                 .build()
             findNavController().navigate(request)
         }

@@ -13,6 +13,6 @@
         android:name="com.mamafarm.android.stockdetails.presentation.JittaStockDetailsFragment"
         android:label="JittaStockDetailsFragment">
 
-        <deepLink app:uri="android-app://example.google.app/jittaStockDetailsFragment" />
+        <deepLink app:uri="android-app://example.google.app/jittaStockDetailsFragment?id={id}&amp;stockId={stockId}&amp;rank={rank}&amp;total={total}" />
     </fragment>
 </navigation>

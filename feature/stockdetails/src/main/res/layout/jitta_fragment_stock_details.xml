@@ -5,13 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/materialToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/baseline_arrow_back_ios_24" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/appBar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,18 +53,21 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvStockName"
+                        style="@style/TextAppearance.MaterialComponents.Headline6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Ngern Tid Lor" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvStockCode"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="BKK:TIDLOR" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvRanking"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Jitta Ranking #1 from 812" />
@@ -70,6 +93,7 @@
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btFollow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/jitta_follow" />
