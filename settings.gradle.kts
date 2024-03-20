@@ -21,4 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Interview_Jitta"
 include(":app")
- 
+include(":feature:ranking")
+include(":core:ui")
+include(":core:network")
+include(":feature:stockdetails")
+include(":core:common")

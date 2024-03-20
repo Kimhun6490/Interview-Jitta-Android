@@ -1,0 +1,47 @@
+query StockQuery($id: String!, $stockId: Int!) {
+    stock(id: $id, stockId: $stockId) {
+        title
+        id
+        stockId
+        isFollowing
+        sector {
+            id
+            name
+        }
+        industry
+        company {
+            link {
+                url
+            }
+        }
+        jitta {
+            factor {
+                values(filterBy:{limit: 1, sort:DESC }) {
+                    id
+                    value {
+                        growth {
+                            name
+                            value
+                        }
+                        financial{
+                            name
+                            value
+                        }
+                        return {
+                            name
+                            value
+                        }
+                        management {
+                            name
+                            value
+                        }
+                        recent {
+                            name
+                            value
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
