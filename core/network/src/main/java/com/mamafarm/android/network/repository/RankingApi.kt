@@ -46,7 +46,14 @@ interface RankingApi {
                     .map {
                         val sector = it.sector!!
                         val sectorRes = QuerySectorResponse(sector.id, sector.name)
-                        QueryRankingResponse(it.id!!, it.name, sectorRes, it.rank, count)
+                        QueryRankingResponse(
+                            it.id!!,
+                            it.name,
+                            sectorRes,
+                            it.rank,
+                            count,
+                            it.stockId
+                        )
                     }
 
                 val list = QueryRankingListResponse(count, ranking)

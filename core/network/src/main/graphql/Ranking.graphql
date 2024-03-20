@@ -3,6 +3,7 @@ query RankingQuery($market: String!,$sectors: [String], $page: Int @optional, $l
         count
         data {
             id
+            stockId
             name
             sector {
                 id
