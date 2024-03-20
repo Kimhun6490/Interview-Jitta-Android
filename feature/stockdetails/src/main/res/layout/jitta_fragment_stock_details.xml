@@ -160,14 +160,14 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="Price(15 Mar 2024)" />
+                            android:text="Price(15 Mar 2024)" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tvPrice"
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            tools:text="22.40" />
+                            android:text="22.40" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -179,18 +179,26 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tvPercentageDescription"
+                            android:text="Under Jitta Line"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="Under Jitta Line" />
+                            android:layout_height="wrap_content" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tvPercentage"
+                            android:text="49.09%"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="49.09%" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mockup_line_charts" />
 
             </LinearLayout>
 
