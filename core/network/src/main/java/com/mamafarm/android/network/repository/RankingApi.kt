@@ -13,6 +13,7 @@ interface RankingApi {
 
     suspend fun queryRankings(
         market: String,
+        sectos: List<String>,
         page: Int?,
         limit: Int?
     ): BaseResponse<QueryRankingListResponse>
@@ -21,11 +22,18 @@ interface RankingApi {
 
         override suspend fun queryRankings(
             market: String,
+            sectos: List<String>,
             page: Int?,
             limit: Int?
         ): BaseResponse<QueryRankingListResponse> {
             return try {
-                val query = RankingQuery(market, Optional.present(page), Optional.present(limit))
+                val query =
+                    RankingQuery(
+                        market,
+                        Optional.present(sectos),
+                        Optional.present(page),
+                        Optional.present(limit)
+                    )
                 val response = client.query(query).execute()
                 val jittaRanking = response.data?.jittaRanking
                     ?: return BaseResponse.Error(IllegalStateException())

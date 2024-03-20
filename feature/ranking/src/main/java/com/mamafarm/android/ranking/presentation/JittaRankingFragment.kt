@@ -163,16 +163,16 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
         val newAdapter = ArrayAdapter(
             requireContext(),
             R.layout.simple_spinner_item,
-            countries.map { it.name }
+            countries.map { it.code }
         )
         binding.spCountry.adapter = newAdapter
-        val index = countries.indexOfFirst { it.name.lowercase() == "Thailand".lowercase() }
+        val index = countries.indexOfFirst { it.code.lowercase() == TH_COUNTRY.lowercase() }
         if (index != -1) binding.spCountry.setSelection(index)
     }
 
     private fun updateUiSectorSpinner(sectors: List<JittaSectorType>) {
-        val list = mutableListOf("All sectors")
-        list.addAll(sectors.map { it.name })
+        val list = mutableListOf(ALL_SECTORS)
+        list.addAll(sectors.map { it.id })
 
         val newAdapter = ArrayAdapter(
             requireContext(),
@@ -186,10 +186,14 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         p0?.let { nonNullAdapter ->
             when (nonNullAdapter.id) {
-                binding.spFilter.id -> {}
+                binding.spFilter.id -> {
+                    val sector = nonNullAdapter.getItemAtPosition(p2) as String //TEMP
+                    viewModel.refresh(sector = sector)
+                }
+
                 binding.spCountry.id -> {
-                    val selectedCountry = nonNullAdapter.getItemAtPosition(p2) as String //TEMP
-                    viewModel.refresh(market = "th")
+                    val code = nonNullAdapter.getItemAtPosition(p2) as String //TEMP
+                    viewModel.refresh(market = code)
                 }
 
                 else -> Unit

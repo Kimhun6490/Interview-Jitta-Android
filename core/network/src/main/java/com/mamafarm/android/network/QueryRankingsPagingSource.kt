@@ -20,7 +20,8 @@ class QueryRankingsPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, QueryRankingResponse> {
         return try {
             val page = params.key ?: 0
-            return when (val response = repository.queryRankings(query.market, page, 10)) {
+            return when (val response =
+                repository.queryRankings(query.market, query.sector, page, 10)) {
                 is BaseResponse.Error -> LoadResult.Error(IllegalStateException())
                 is BaseResponse.Success -> {
                     val list = response.data.data

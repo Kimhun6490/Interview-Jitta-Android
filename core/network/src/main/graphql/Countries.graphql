@@ -2,5 +2,6 @@ query CountriesQuery {
     availableCountry {
         name
         flag
+        code
     }
 }

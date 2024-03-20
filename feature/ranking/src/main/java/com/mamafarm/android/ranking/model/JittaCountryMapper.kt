@@ -7,6 +7,7 @@ class JittaCountryMapper : Mapper<QueryAvailableCountryResponse, JittaCountry> {
 
     override suspend fun map(from: QueryAvailableCountryResponse): JittaCountry {
         return JittaCountry(
+            code = from.code ?: "",
             name = from.name ?: "",
             flag = from.flag ?: "",
         )

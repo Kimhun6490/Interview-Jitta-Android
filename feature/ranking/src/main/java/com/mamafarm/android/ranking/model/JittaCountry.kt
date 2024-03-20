@@ -1,3 +1,3 @@
 package com.mamafarm.android.ranking.model
 
-data class JittaCountry(val name: String, val flag: String)
+data class JittaCountry(val name: String, val flag: String, val code: String)

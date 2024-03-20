@@ -20,7 +20,7 @@ interface CountryApi {
                     ?: return BaseResponse.Error(IllegalStateException())
                 val countries = availableCountry
                     .mapNotNull { it }
-                    .map { QueryAvailableCountryResponse(it.name, it.flag) }
+                    .map { QueryAvailableCountryResponse(it.name, it.flag, it.code) }
 
                 BaseResponse.Success(countries)
             } catch (ex: Exception) {

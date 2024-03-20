@@ -1,5 +1,6 @@
 package com.mamafarm.android.ranking.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val ALL_SECTORS = "All sectors"
+const val TH_COUNTRY = "TH"
+
 @HiltViewModel
 class JittaRankingViewModel @Inject constructor(
     private val countryRepository: CountryApi.Impl,
@@ -35,7 +39,7 @@ class JittaRankingViewModel @Inject constructor(
     private val rankMapper: JittaRankMapper,
 ) : ViewModel() {
 
-    private var query = QueryRankingParamsRequest(market = "th")
+    private var query = QueryRankingParamsRequest(market = TH_COUNTRY, emptyList())
     private var dataSource: QueryRankingsPagingSource? = null
         get() {
             if (field == null || field?.invalid == true) {
@@ -84,9 +88,12 @@ class JittaRankingViewModel @Inject constructor(
         }
     }
 
-    fun refresh(market: String? = null) {
+    fun refresh(market: String? = null, sector: String? = null) {
         val currentMarket = market ?: query.market
-        query = QueryRankingParamsRequest(currentMarket)
+        val currentSector = if (sector != null) {
+            if (ALL_SECTORS == sector) emptyList() else listOf(sector)
+        } else query.sector
+        query = QueryRankingParamsRequest(currentMarket, currentSector)
         dataSource?.invalidate()
     }
 }
