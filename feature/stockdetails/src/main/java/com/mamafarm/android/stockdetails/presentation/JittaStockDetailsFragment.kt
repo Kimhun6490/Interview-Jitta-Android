@@ -48,38 +48,9 @@ class JittaStockDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.materialToolbar.setNavigationOnClickListener { findNavController().navigateUp(); }
-        val menuProvider = object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.app_bar_menu, menu)
-
-                val searchItem = menu.findItem(R.id.app_bar_search)
-                val searchView = searchItem.actionView as SearchView
-                searchView.isIconifiedByDefault = false
-                searchView.setOnQueryTextFocusChangeListener { view, isFocus ->
-                    if (isFocus) view.clearFocus()
-                    //OPEN SEARCH VIEW
-                }
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.app_bar_search -> return true
-                    R.id.wise -> {
-                        Toast.makeText(requireContext(), "Not supported yet.", Toast.LENGTH_LONG)
-                            .show()
-                        return true
-                    }
-                }
-                return false
-            }
-
+        binding.etSearch.setOnClickListener {
+            
         }
-        val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(
-            menuProvider,
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED
-        )
     }
 
     private fun loadData() {
