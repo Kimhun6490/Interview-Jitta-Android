@@ -139,19 +139,22 @@ class JittaRankingFragment : Fragment(), AppBarLayout.OnOffsetChangedListener,
             rankingAdapter.loadStateFlow.collectLatest { loadState ->
                 when (loadState.refresh) {
                     is LoadState.Loading -> {
-                        binding.refreshLayout.isRefreshing = false
+                        binding.refreshLayout.isRefreshing = true
                     }
 
                     is LoadState.NotLoading -> {
+                        binding.refreshLayout.isRefreshing = false
                         Log.i("paging_data", "not loading")
                     }
 
                     is LoadState.Error -> {
+                        binding.refreshLayout.isRefreshing = false
                         Log.i("paging_data", "error")
                     }
                 }
                 if (loadState.append.endOfPaginationReached) {
                     if (rankingAdapter.itemCount < 1) {
+                        binding.refreshLayout.isRefreshing = false
                         Log.i("paging_data", "end of page")
                     }
                 }

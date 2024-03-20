@@ -93,7 +93,18 @@ class JittaRankingViewModel @Inject constructor(
         val currentSector = if (sector != null) {
             if (ALL_SECTORS == sector) emptyList() else listOf(sector)
         } else query.sector
+
+        val newSector = if (sector != null) listOf(sector) else emptyList()
+        val isSameMarket = currentMarket == market
+        val isSameSector = currentSector.deepEquals(newSector)
+        if (isSameMarket && isSameSector) return
+
         query = QueryRankingParamsRequest(currentMarket, currentSector)
         dataSource?.invalidate()
     }
+
+    fun <T> List<T>.deepEquals(other: List<T>) =
+        size == other.size && asSequence()
+            .mapIndexed { index, element -> element == other[index] }
+            .all { it }
 }
