@@ -48,9 +48,7 @@ class JittaStockDetailsFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.materialToolbar.setNavigationOnClickListener { findNavController().navigateUp(); }
-        binding.etSearch.setOnClickListener {
-            
-        }
+        binding.etSearch.setOnClickListener {}
     }
 
     private fun loadData() {
